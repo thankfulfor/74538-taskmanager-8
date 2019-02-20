@@ -1,63 +1,76 @@
 'use strict';
 
-const filters = [
-  {
-    name: `ALL`,
-    count: 5,
-  },
-  {
-    name: `OVERDUE`,
-    count: 0,
-  },
-  {
-    name: `TODAY`,
-    count: 0,
-  },
-  {
-    name: `FAVORITES`,
-    count: 7,
-  },
-  {
-    name: `Repeating`,
-    count: 2,
-  },
-  {
-    name: `Tags`,
-    count: 6,
-  },
-  {
-    name: `ARCHIVE`,
-    count: 5,
-  }
-];
-
+const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
-const TEMPLATE_CARDS_QUANTITY = 6;
 
 const getRandomNumber = function () {
   return Math.floor(Math.random() * Math.floor(MAX_NUMBER));
 };
 
+const filters = [
+  {
+    name: `ALL`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `OVERDUE`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `TODAY`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `FAVORITES`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `Repeating`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `Tags`,
+    count: getRandomNumber(),
+  },
+  {
+    name: `ARCHIVE`,
+    count: getRandomNumber(),
+  }
+];
+
 const filtersParentElement = document.querySelector(`.main__filter`);
 const cardsParentElement = document.querySelector(`.board__tasks`);
+let isCheckedFilter = false;
 
-const showFilters = function (array) {
+const setChecked = (filterElement) => {
+  filterElement.querySelector(`input`).setAttribute(`checked`, `true`);
+  isCheckedFilter = true;
+};
+
+const showFilters = function (filtersArray) {
   const fragment = document.createDocumentFragment();
-  array.forEach(function (item) {
+  filtersArray.forEach(function (item) {
     const templateFilterMarkup = document.querySelector(`#filter-template`).content;
     const filterElement = templateFilterMarkup.cloneNode(true);
-    const labelElement = filterElement.querySelector(`label`);
-    const spanElement = filterElement.querySelector(`span`);
+    const filterLabelElement = filterElement.querySelector(`.filter__label`);
+    const filterCountElement = filterElement.querySelector(`.filter__count`);
 
     filterElement.querySelector(`input`).setAttribute(`id`, `filter__${item.name.toLowerCase()}`);
-    labelElement.setAttribute(`for`, `filter__${item.name.toLowerCase()}`);
-    labelElement.firstChild.textContent = `${item.name} `;
-    labelElement.addEventListener(`click`, function () {
+
+    if (item.count === 0) {
+      filterElement.querySelector(`input`).setAttribute(`disabled`, `true`);
+    } else if (!isCheckedFilter) {
+      setChecked(filterElement);
+    }
+
+    filterLabelElement.setAttribute(`for`, `filter__${item.name.toLowerCase()}`);
+    filterLabelElement.firstChild.textContent = `${item.name} `;
+    filterLabelElement.addEventListener(`click`, function () {
       cardsParentElement.textContent = ``;
       showCards(getRandomNumber());
     });
-    spanElement.className = `filter__${item.name.toLowerCase()}-count`;
-    spanElement.textContent = getRandomNumber();
+    filterCountElement.className = `filter__${item.name.toLowerCase()}-count`;
+    filterCountElement.textContent = `${item.count}`;
     fragment.appendChild(filterElement);
   });
   filtersParentElement.appendChild(fragment);
