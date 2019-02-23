@@ -49,16 +49,24 @@ const filters = [
 const filtersParentElement = document.querySelector(`.main__filter`);
 const cardsParentElement = document.querySelector(`.board__tasks`);
 
-filters.forEach(function (filter) {
+filters.forEach(function (filter, i) {
   filtersParentElement.insertAdjacentHTML(`beforeend`, window.renderFilter(filter.checked, filter.name, filter.count));
+
+  const filterLabelElement = filtersParentElement.querySelectorAll(`.filter__label`)[i];
+  filterLabelElement.addEventListener(`click`, function () {
+    cardsParentElement.innerHTML = ``;
+    console.log(cardsParentElement.innerHTML);
+    showCards(getRandomNumber());
+  });
 });
 
-let cardList = ``;
 const showCards = function (cardsQuantity) {
+  let cardList = ``;
   for (let i = 1; i <= cardsQuantity; i++) {
     cardList += window.renderTemplate();
   }
   cardsParentElement.innerHTML = cardList;
 };
+
 
 showCards(TEMPLATE_CARDS_QUANTITY);
