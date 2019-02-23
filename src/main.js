@@ -1,6 +1,5 @@
 'use strict';
 
-
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
 
@@ -49,24 +48,28 @@ const filters = [
 const filtersParentElement = document.querySelector(`.main__filter`);
 const cardsParentElement = document.querySelector(`.board__tasks`);
 
-filters.forEach(function (filter, i) {
-  filtersParentElement.insertAdjacentHTML(`beforeend`, window.renderFilter(filter.checked, filter.name, filter.count));
-
-  const filterLabelElement = filtersParentElement.querySelectorAll(`.filter__label`)[i];
-  filterLabelElement.addEventListener(`click`, function () {
-    cardsParentElement.innerHTML = ``;
-    console.log(cardsParentElement.innerHTML);
-    showCards(getRandomNumber());
-  });
-});
+const showFilters = function () {
+  let filterList = ``;
+  for (let i = 0; i < filters.length; i++) {
+    filterList += window.renderFilter(filters[i].checked, filters[i].name, filters[i].count);
+  }
+  filtersParentElement.innerHTML = filterList;
+  const filterLabelElements = filtersParentElement.querySelectorAll(`.filter__label`);
+  for (let i = 0; i < filterLabelElements.length; i++) {
+    filterLabelElements[i].addEventListener(`click`, function () {
+      cardsParentElement.innerHTML = ``;
+      showCards(getRandomNumber());
+    });
+  }
+};
 
 const showCards = function (cardsQuantity) {
   let cardList = ``;
   for (let i = 1; i <= cardsQuantity; i++) {
-    cardList += window.renderTemplate();
+    cardList += window.renderCard();
   }
   cardsParentElement.innerHTML = cardList;
 };
 
-
+showFilters();
 showCards(TEMPLATE_CARDS_QUANTITY);

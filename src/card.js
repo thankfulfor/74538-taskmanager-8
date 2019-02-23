@@ -1,7 +1,7 @@
 'use strict';
 
 (function () {
-  window.renderTemplate = function () {
+  window.renderCard = function () {
     return (
       `<article class="card card--black">
     <form class="card__form" method="get">
