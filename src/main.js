@@ -48,19 +48,25 @@ const filters = [
 const filtersParentElement = document.querySelector(`.main__filter`);
 const cardsParentElement = document.querySelector(`.board__tasks`);
 
+const filterLabelClickHandler = function () {
+  cardsParentElement.innerHTML = ``;
+  showCards(getRandomNumber());
+};
+
+const showCardsByClick = function () {
+  const filterLabelElements = filtersParentElement.querySelectorAll(`.filter__label`);
+  for (let i = 0; i < filterLabelElements.length; i++) {
+    filterLabelElements[i].addEventListener(`click`, filterLabelClickHandler);
+  }
+};
+
 const showFilters = function () {
   let filterList = ``;
   for (let i = 0; i < filters.length; i++) {
     filterList += window.renderFilter(filters[i].checked, filters[i].name, filters[i].count);
   }
   filtersParentElement.innerHTML = filterList;
-  const filterLabelElements = filtersParentElement.querySelectorAll(`.filter__label`);
-  for (let i = 0; i < filterLabelElements.length; i++) {
-    filterLabelElements[i].addEventListener(`click`, function () {
-      cardsParentElement.innerHTML = ``;
-      showCards(getRandomNumber());
-    });
-  }
+  showCardsByClick();
 };
 
 const showCards = function (cardsQuantity) {
