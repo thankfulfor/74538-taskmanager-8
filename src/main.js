@@ -1,5 +1,6 @@
 'use strict';
 
+
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
 
@@ -9,30 +10,37 @@ const getRandomNumber = function () {
 
 const filters = [
   {
+    checked: true,
     name: `ALL`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `OVERDUE`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `TODAY`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `FAVORITES`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `Repeating`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `Tags`,
     count: getRandomNumber(),
   },
   {
+    checked: false,
     name: `ARCHIVE`,
     count: getRandomNumber(),
   }
@@ -41,43 +49,16 @@ const filters = [
 const filtersParentElement = document.querySelector(`.main__filter`);
 const cardsParentElement = document.querySelector(`.board__tasks`);
 
-const showFilters = function (filtersArray) {
-  const fragment = document.createDocumentFragment();
-  filtersArray.forEach(function (item) {
-    const templateFilterMarkup = document.querySelector(`#filter-template`).content;
-    const filterElement = templateFilterMarkup.cloneNode(true);
-    const filterInputElement = filterElement.querySelector(`.filter__input`);
-    const filterLabelElement = filterElement.querySelector(`.filter__label`);
-    const filterCountElement = filterElement.querySelector(`.filter__count`);
-    const itemName = item.name.toLowerCase();
+filters.forEach(function (filter) {
+  filtersParentElement.insertAdjacentHTML(`beforeend`, window.renderFilter(filter.checked, filter.name, filter.count));
+});
 
-    filterInputElement.checked = item.name === `ALL`;
-    filterInputElement.setAttribute(`id`, `filter__${itemName}`);
-
-    filterLabelElement.setAttribute(`for`, `filter__${itemName}`);
-    filterLabelElement.firstChild.textContent = `${item.name} `;
-    filterLabelElement.addEventListener(`click`, function () {
-      cardsParentElement.textContent = ``;
-      showCards(getRandomNumber());
-    });
-
-    filterCountElement.className = `filter__${itemName}-count`;
-    filterCountElement.textContent = `${item.count}`;
-
-    fragment.appendChild(filterElement);
-  });
-  filtersParentElement.appendChild(fragment);
-};
-
+let cardList = ``;
 const showCards = function (cardsQuantity) {
-  const fragment = document.createDocumentFragment();
   for (let i = 1; i <= cardsQuantity; i++) {
-    const templateCardMarkup = document.querySelector(`#card-template`).content;
-    const filterElement = templateCardMarkup.cloneNode(true);
-    fragment.appendChild(filterElement);
+    cardList += window.renderTemplate();
   }
-  cardsParentElement.appendChild(fragment);
+  cardsParentElement.innerHTML = cardList;
 };
 
-showFilters(filters);
 showCards(TEMPLATE_CARDS_QUANTITY);
