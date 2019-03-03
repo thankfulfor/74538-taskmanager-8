@@ -1,9 +1,4 @@
-import {getTask} from './get-task.js';
-import {getRandomNumber} from './utils.js';
-
-const taskData = getTask();
-
-const getColorRadio = () => {
+const getColorRadio = (data) => {
   const getColoredInput = (inputcolor) => {
     return (`<input
         type="radio"
@@ -11,7 +6,7 @@ const getColorRadio = () => {
         class="card__color-input card__color-input--${inputcolor} visually-hidden"
         name="color"
         value="${inputcolor}"
-        ${taskData.color === inputcolor ? `checked` : ``}
+        ${data.color === inputcolor ? `checked` : ``}
       />
       <label for="color-${inputcolor}-1" class="card__color card__color--${inputcolor}" >${inputcolor}</label>`);
   };
@@ -26,15 +21,8 @@ const getColorRadio = () => {
   return inputColors.map(getColoredInput).join(``);
 };
 
-const getHashtags = () => {
-  const getRandomTags = () => {
-    const randomTagsSet = new Set();
-    for (let i = 0; i <= getRandomNumber(3); i++) {
-      randomTagsSet.add(Array.from(taskData.tags)[getRandomNumber(taskData.tags.size)]);
-    }
-    return Array.from(randomTagsSet);
-  };
-  const randomTags = getRandomTags();
+const getHashtags = (data) => {
+  const hashtags = Array.from(data.tags);
   const getHashtag = (tag) => {
     return (
       `<span class="card__hashtag-inner">
@@ -52,25 +40,25 @@ const getHashtags = () => {
           </button>
         </span>`);
   };
-  return randomTags.map(getHashtag).join(``);
+  return hashtags.map(getHashtag).join(``);
 };
 
-const getDueDate = () => {
-  return taskData.dueDate.toLocaleDateString(`en-GB`, {
+const getDueDate = (data) => {
+  return data.dueDate.toLocaleDateString(`en-GB`, {
     day: `numeric`,
     month: `long`,
   });
 };
 
-const getDueTime = () => {
-  return taskData.dueDate.toLocaleString(`en-US`, {
+const getDueTime = (data) => {
+  return data.dueDate.toLocaleString(`en-US`, {
     hour: `numeric`,
     minute: `numeric`,
     hour12: true
   });
 };
 
-const getRepeatedDays = () => {
+const getRepeatedDays = (data) => {
   const getRepeatedDay = (repeatingDay) => {
     const dayInLowerCase = repeatingDay.toLowerCase();
     return (
@@ -80,16 +68,16 @@ const getRepeatedDays = () => {
         id="repeat-${dayInLowerCase}-4"
         name="repeat"
         value="${dayInLowerCase}"
-        ${taskData.repeatingDays[repeatingDay] ? `checked` : ``}
+        ${data.repeatingDays[repeatingDay] ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${dayInLowerCase}-4">${dayInLowerCase}</label>`
     );
   };
 
-  return Object.keys(taskData.repeatingDays).map(getRepeatedDay).join(``);
+  return Object.keys(data.repeatingDays).map(getRepeatedDay).join(``);
 };
 
-export const renderTask = () => {
+export const renderTask = (data) => {
   return (
     `<article class="card card--edit card--yellow card--repeat">
       <form class="card__form" method="get">
@@ -121,7 +109,7 @@ export const renderTask = () => {
                 class="card__text"
                 placeholder="Start typing your text here..."
                 name="text"
-              >${taskData.title}</textarea>
+              >${data.title}</textarea>
             </label>
           </div>
 
@@ -137,18 +125,18 @@ export const renderTask = () => {
                     <input
                       class="card__date"
                       type="text"
-                      placeholder="${getDueDate()}"
+                      placeholder="${getDueDate(data)}"
                       name="date"
-                      value="${getDueDate()}"
+                      value="${getDueDate(data)}"
                     />
                   </label>
                   <label class="card__input-deadline-wrap">
                     <input
                       class="card__time"
                       type="text"
-                      placeholder="${getDueTime()}"
+                      placeholder="${getDueTime(data)}"
                       name="time"
-                      value="${getDueTime()}"
+                      value="${getDueTime(data)}"
                     />
                   </label>
                 </fieldset>
@@ -159,14 +147,14 @@ export const renderTask = () => {
 
                 <fieldset class="card__repeat-days">
                   <div class="card__repeat-days-inner">
-                    ${getRepeatedDays()}
+                    ${getRepeatedDays(data)}
                   </div>
                 </fieldset>
               </div>
 
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
-                  ${getHashtags()}
+                  ${getHashtags(data)}
                 </div>
 
                 <label>
@@ -187,7 +175,7 @@ export const renderTask = () => {
                 name="img"
               />
               <img
-                src="${taskData.picture}"
+                src="${data.picture}"
                 alt="task picture"
                 class="card__img"
               />
@@ -196,7 +184,7 @@ export const renderTask = () => {
             <div class="card__colors-inner">
               <h3 class="card__colors-title">Color</h3>
               <div class="card__colors-wrap">
-                ${getColorRadio()}
+                ${getColorRadio(data)}
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
-import {getRandomNumber} from './utils.js';
-import renderFilter from './filter.js';
-import {renderTask} from './card.js';
+import {getRandomNumber} from './utils';
+import renderFilter from './filter';
+import {renderTask} from './render-task';
+import {getTaskData} from './mocks';
 
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
@@ -71,7 +72,7 @@ const showTasks = function () {
   const getTasks = () => {
     let cards = [];
     for (let i = 1; i <= TEMPLATE_CARDS_QUANTITY; i++) {
-      cards.push(renderTask());
+      cards.push(renderTask(getTaskData()));
     }
     return cards;
   };
