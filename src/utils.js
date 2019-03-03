@@ -3,5 +3,5 @@ export const getRandomNumber = function (number) {
 };
 
 export const getRandomBoolean = function () {
-  return !!(Math.floor(Math.random() * 2));
+  return Math.random() > 0.5;
 };

@@ -1,47 +1,6 @@
-const getColorRadio = (data) => {
-  const getColoredInput = (inputcolor) => {
-    return (`<input
-        type="radio"
-        id="color-${inputcolor}-1"
-        class="card__color-input card__color-input--${inputcolor} visually-hidden"
-        name="color"
-        value="${inputcolor}"
-        ${data.color === inputcolor ? `checked` : ``}
-      />
-      <label for="color-${inputcolor}-1" class="card__color card__color--${inputcolor}" >${inputcolor}</label>`);
-  };
-
-  const inputColors = [
-    `black`,
-    `yellow`,
-    `blue`,
-    `green`,
-    `pink`,
-  ];
-  return inputColors.map(getColoredInput).join(``);
-};
-
-const getHashtags = (data) => {
-  const hashtags = Array.from(data.tags);
-  const getHashtag = (tag) => {
-    return (
-      `<span class="card__hashtag-inner">
-          <input
-            type="hidden"
-            name="hashtag"
-            value="repeat"
-            class="card__hashtag-hidden-input"
-          />
-          <button type="button" class="card__hashtag-name">
-            #${tag}
-          </button>
-          <button type="button" class="card__hashtag-delete">
-            delete
-          </button>
-        </span>`);
-  };
-  return hashtags.map(getHashtag).join(``);
-};
+import renderHashtags from './render-hashtags';
+import renderColors from './render-color';
+import renderDays from './render-days';
 
 const getDueDate = (data) => {
   return data.dueDate.toLocaleDateString(`en-GB`, {
@@ -56,25 +15,6 @@ const getDueTime = (data) => {
     minute: `numeric`,
     hour12: true
   });
-};
-
-const getRepeatedDays = (data) => {
-  const getRepeatedDay = (repeatingDay) => {
-    const dayInLowerCase = repeatingDay.toLowerCase();
-    return (
-      `<input
-        class="visually-hidden card__repeat-day-input"
-        type="checkbox"
-        id="repeat-${dayInLowerCase}-4"
-        name="repeat"
-        value="${dayInLowerCase}"
-        ${data.repeatingDays[repeatingDay] ? `checked` : ``}
-        />
-        <label class="card__repeat-day" for="repeat-${dayInLowerCase}-4">${dayInLowerCase}</label>`
-    );
-  };
-
-  return Object.keys(data.repeatingDays).map(getRepeatedDay).join(``);
 };
 
 export const renderTask = (data) => {
@@ -147,14 +87,14 @@ export const renderTask = (data) => {
 
                 <fieldset class="card__repeat-days">
                   <div class="card__repeat-days-inner">
-                    ${getRepeatedDays(data)}
+                    ${renderDays(data)}
                   </div>
                 </fieldset>
               </div>
 
               <div class="card__hashtag">
                 <div class="card__hashtag-list">
-                  ${getHashtags(data)}
+                  ${renderHashtags(data)}
                 </div>
 
                 <label>
@@ -184,7 +124,7 @@ export const renderTask = (data) => {
             <div class="card__colors-inner">
               <h3 class="card__colors-title">Color</h3>
               <div class="card__colors-wrap">
-                ${getColorRadio(data)}
+                ${renderColors(data)}
               </div>
             </div>
           </div>
