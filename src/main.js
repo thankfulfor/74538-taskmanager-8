@@ -1,48 +1,46 @@
-import renderFilter from '../src/filter.js';
-import renderCard from '../src/card.js';
+import {getRandomNumber} from './utils';
+import renderFilter from './filter';
+import {renderTask} from './render-task';
+import {getTaskData} from './mocks';
 
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
-
-const getRandomNumber = function () {
-  return Math.floor(Math.random() * Math.floor(MAX_NUMBER));
-};
 
 const filters = [
   {
     checked: true,
     name: `ALL`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `OVERDUE`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `TODAY`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `FAVORITES`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `Repeating`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `Tags`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   },
   {
     checked: false,
     name: `ARCHIVE`,
-    count: getRandomNumber(),
+    count: getRandomNumber(MAX_NUMBER),
   }
 ];
 
@@ -51,7 +49,7 @@ const cardsParentElement = document.querySelector(`.board__tasks`);
 
 const filterInputChangeHandler = function () {
   cardsParentElement.innerHTML = ``;
-  showCards(getRandomNumber());
+  showTasks(getRandomNumber(MAX_NUMBER));
 };
 
 const showCardsByClick = function () {
@@ -70,13 +68,16 @@ const showFilters = function () {
   showCardsByClick();
 };
 
-const showCards = function (cardsQuantity) {
-  let cardList = ``;
-  for (let i = 1; i <= cardsQuantity; i++) {
-    cardList += renderCard();
-  }
-  cardsParentElement.innerHTML = cardList;
+const showTasks = function () {
+  const getTasks = () => {
+    let cards = [];
+    for (let i = 1; i <= TEMPLATE_CARDS_QUANTITY; i++) {
+      cards.push(renderTask(getTaskData()));
+    }
+    return cards;
+  };
+  cardsParentElement.innerHTML = getTasks().join(``);
 };
 
 showFilters();
-showCards(TEMPLATE_CARDS_QUANTITY);
+showTasks();
