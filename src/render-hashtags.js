@@ -1,5 +1,5 @@
-export default function (data) {
-  const hashtags = Array.from(data.tags);
+export default function (hashtags) {
+  const tags = Array.from(hashtags);
   const getHashtag = (tag) => {
     return (
       `<span class="card__hashtag-inner">
@@ -17,5 +17,5 @@ export default function (data) {
           </button>
         </span>`);
   };
-  return hashtags.map(getHashtag).join(``);
-};
+  return tags.map(getHashtag).join(``);
+}
