@@ -1,4 +1,4 @@
-export default function (data) {
+export default function (repeatingDays) {
   const getRepeatedDay = (repeatingDay) => {
     const dayInLowerCase = repeatingDay.toLowerCase();
     return (
@@ -8,11 +8,11 @@ export default function (data) {
         id="repeat-${dayInLowerCase}-4"
         name="repeat"
         value="${dayInLowerCase}"
-        ${data.repeatingDays[repeatingDay] ? `checked` : ``}
+        ${repeatingDays[repeatingDay] ? `checked` : ``}
         />
         <label class="card__repeat-day" for="repeat-${dayInLowerCase}-4">${dayInLowerCase}</label>`
     );
   };
 
-  return Object.keys(data.repeatingDays).map(getRepeatedDay).join(``);
-};
+  return Object.keys(repeatingDays).map(getRepeatedDay).join(``);
+}

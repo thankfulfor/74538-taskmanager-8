@@ -1,7 +1,8 @@
 import {getRandomNumber} from './utils';
 import renderFilter from './filter';
-import {renderTask} from './render-task';
 import {getTaskData} from './mocks';
+import {Task} from './task';
+import {TaskEdit} from './task-edit';
 
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;
@@ -68,16 +69,29 @@ const showFilters = function () {
   showCardsByClick();
 };
 
-const showTasks = function () {
-  const getTasks = () => {
-    let cards = [];
-    for (let i = 1; i <= TEMPLATE_CARDS_QUANTITY; i++) {
-      cards.push(renderTask(getTaskData()));
-    }
-    return cards;
+const renderTask = function (data) {
+  const taskComponent = new Task(data);
+  cardsParentElement.appendChild(taskComponent.render());
+  const editTaskComponent = new TaskEdit(data);
+
+  taskComponent.onEdit = () => {
+    editTaskComponent.render();
+    cardsParentElement.replaceChild(editTaskComponent.element, taskComponent.element);
+    taskComponent.unrender();
   };
-  cardsParentElement.innerHTML = getTasks().join(``);
+
+  editTaskComponent.onSubmit = () => {
+    taskComponent.render();
+    cardsParentElement.replaceChild(taskComponent.element, editTaskComponent.element);
+    editTaskComponent.unrender();
+  };
+};
+
+const showTasks = function (cardsQuantity) {
+  for (let i = 1; i <= cardsQuantity; i++) {
+    renderTask(getTaskData());
+  }
 };
 
 showFilters();
-showTasks();
+showTasks(TEMPLATE_CARDS_QUANTITY);
