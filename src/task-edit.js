@@ -25,7 +25,7 @@ export class TaskEdit {
       day: `numeric`,
       month: `long`,
     });
-  };
+  }
 
   _getDueTime() {
     return this._dueDate.toLocaleString(`en-US`, {
@@ -33,7 +33,7 @@ export class TaskEdit {
       minute: `numeric`,
       hour12: true
     });
-  };
+  }
 
   get element() {
     return this._element;

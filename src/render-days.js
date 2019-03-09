@@ -15,4 +15,4 @@ export default function (repeatingDays) {
   };
 
   return Object.keys(repeatingDays).map(getRepeatedDay).join(``);
-};
+}

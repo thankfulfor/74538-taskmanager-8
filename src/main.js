@@ -2,7 +2,7 @@ import {getRandomNumber} from './utils';
 import renderFilter from './filter';
 import {getTaskData} from './mocks';
 import {Task} from './task';
-import {TaskEdit} from './edit-task';
+import {TaskEdit} from './task-edit';
 
 const TEMPLATE_CARDS_QUANTITY = 7;
 const MAX_NUMBER = 20;

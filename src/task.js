@@ -4,7 +4,6 @@ export class Task {
   constructor(data) {
     this._title = data.title;
     this._dueDate = data.dueDate;
-    this._dueTime = data.dueDate;
     this._tags = data.tags;
     this._picture = data.picture;
     this._repeatingDays = data.repeatingDays;
