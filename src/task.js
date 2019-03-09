@@ -11,21 +11,6 @@ export class Task extends Component {
 
     this._onEdit = null;
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
-
-    this._getDueDate = function () {
-      return this._dueDate.toLocaleDateString(`en-GB`, {
-        day: `numeric`,
-        month: `long`,
-      });
-    };
-
-    this._getDueTime = function () {
-      return this._dueDate.toLocaleString(`en-US`, {
-        hour: `numeric`,
-        minute: `numeric`,
-        hour12: true
-      });
-    };
   }
 
   _onEditButtonClick() {
@@ -43,6 +28,21 @@ export class Task extends Component {
     this._onEdit = fn;
   }
 
+  _getDueDate() {
+    return this._dueDate.toLocaleDateString(`en-GB`, {
+      day: `numeric`,
+      month: `long`,
+    });
+  }
+
+  _getDueTime() {
+    return this._dueDate.toLocaleString(`en-US`, {
+      hour: `numeric`,
+      minute: `numeric`,
+      hour12: true
+    });
+  }
+
   _getHashTags() {
     const hashtags = Array.from(this._tags);
     const getHashtag = (tag) => {
@@ -53,8 +53,7 @@ export class Task extends Component {
           </button>
       </span>`);
     };
-    return hashtags.map(getHashtag)
-      .join(``);
+    return hashtags.map(getHashtag).join(``);
   }
 
   get template() {

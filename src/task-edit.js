@@ -16,8 +16,12 @@ export class TaskEdit extends Component {
     this._getHashtags = getHashtags;
     this._repeatingDays = data.repeatingDays;
 
+    this._onEdit = null;
     this._onSubmit = null;
+    this._onDelete = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+    this._onEditButtonClick = this._onEditButtonClick.bind(this);
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
   }
 
   _getDueDate() {
@@ -43,6 +47,26 @@ export class TaskEdit extends Component {
     evt.preventDefault();
     if (typeof this._onSubmit === `function`) {
       this._onSubmit();
+    }
+  }
+
+  set onEdit(fn) {
+    this._onEdit = fn;
+  }
+
+  _onEditButtonClick() {
+    if (typeof this._onEdit === `function`) {
+      this._onEdit();
+    }
+  }
+
+  set onDelete(fn) {
+    this._onDelete = fn;
+  }
+
+  _onDeleteButtonClick() {
+    if (typeof this._onDelete === `function`) {
+      this._onDelete();
     }
   }
 
@@ -176,6 +200,12 @@ export class TaskEdit extends Component {
   bind() {
     this._element.querySelector(`.card__save`)
       .addEventListener(`click`, this._onSubmitButtonClick);
+
+    this._element.querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, this._onEditButtonClick);
+
+    this._element.querySelector(`.card__delete`)
+      .addEventListener(`click`, this._onDeleteButtonClick);
   }
 
   unbind() {

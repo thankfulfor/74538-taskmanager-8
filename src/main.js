@@ -85,6 +85,17 @@ const renderTask = function (data) {
     cardsParentElement.replaceChild(taskComponent.element, editTaskComponent.element);
     editTaskComponent.unrender();
   };
+
+  editTaskComponent.onEdit = () => {
+    taskComponent.render();
+    cardsParentElement.replaceChild(taskComponent.element, editTaskComponent.element);
+    editTaskComponent.unrender();
+  };
+
+  editTaskComponent.onDelete = () => {
+    cardsParentElement.removeChild(editTaskComponent.element);
+    editTaskComponent.unrender();
+  };
 };
 
 const showTasks = function (cardsQuantity) {

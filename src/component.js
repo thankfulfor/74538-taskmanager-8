@@ -26,6 +26,7 @@ export class Component {
     this.bind();
     return this._element;
   }
+
   unrender() {
     this.unbind();
     this._element = null;
