@@ -1,31 +1,16 @@
-import {createElement} from './utils';
+import {Component} from './component';
 
-export class Task {
+export class Task extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
     this._picture = data.picture;
     this._repeatingDays = data.repeatingDays;
 
-    this._element = null;
     this._onEdit = null;
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
-
-    this._getDueDate = function () {
-      return this._dueDate.toLocaleDateString(`en-GB`, {
-        day: `numeric`,
-        month: `long`,
-      });
-    };
-
-    this._getDueTime = function () {
-      return this._dueDate.toLocaleString(`en-US`, {
-        hour: `numeric`,
-        minute: `numeric`,
-        hour12: true
-      });
-    };
   }
 
   _onEditButtonClick() {
@@ -39,12 +24,23 @@ export class Task {
       .some((dayOfWeek) => dayOfWeek === true);
   }
 
-  get element() {
-    return this._element;
-  }
-
   set onEdit(fn) {
     this._onEdit = fn;
+  }
+
+  _getDueDate() {
+    return this._dueDate.toLocaleDateString(`en-GB`, {
+      day: `numeric`,
+      month: `long`,
+    });
+  }
+
+  _getDueTime() {
+    return this._dueDate.toLocaleString(`en-US`, {
+      hour: `numeric`,
+      minute: `numeric`,
+      hour12: true
+    });
   }
 
   _getHashTags() {
@@ -57,8 +53,7 @@ export class Task {
           </button>
       </span>`);
     };
-    return hashtags.map(getHashtag)
-      .join(``);
+    return hashtags.map(getHashtag).join(``);
   }
 
   get template() {
@@ -166,15 +161,5 @@ export class Task {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
 }
 

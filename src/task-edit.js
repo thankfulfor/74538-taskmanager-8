@@ -1,10 +1,11 @@
-import {createElement} from './utils';
 import getColor from './render-color';
 import getDays from './render-days';
 import getHashtags from './render-hashtags';
+import {Component} from './component';
 
-export class TaskEdit {
+export class TaskEdit extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -15,9 +16,12 @@ export class TaskEdit {
     this._getHashtags = getHashtags;
     this._repeatingDays = data.repeatingDays;
 
+    this._onEdit = null;
     this._onSubmit = null;
-    this._element = null;
+    this._onDelete = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
+    this._onEditButtonClick = this._onEditButtonClick.bind(this);
+    this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
   }
 
   _getDueDate() {
@@ -35,10 +39,6 @@ export class TaskEdit {
     });
   }
 
-  get element() {
-    return this._element;
-  }
-
   set onSubmit(fn) {
     this._onSubmit = fn;
   }
@@ -47,6 +47,26 @@ export class TaskEdit {
     evt.preventDefault();
     if (typeof this._onSubmit === `function`) {
       this._onSubmit();
+    }
+  }
+
+  set onEdit(fn) {
+    this._onEdit = fn;
+  }
+
+  _onEditButtonClick() {
+    if (typeof this._onEdit === `function`) {
+      this._onEdit();
+    }
+  }
+
+  set onDelete(fn) {
+    this._onDelete = fn;
+  }
+
+  _onDeleteButtonClick() {
+    if (typeof this._onDelete === `function`) {
+      this._onDelete();
     }
   }
 
@@ -180,22 +200,17 @@ export class TaskEdit {
   bind() {
     this._element.querySelector(`.card__save`)
       .addEventListener(`click`, this._onSubmitButtonClick);
+
+    this._element.querySelector(`.card__btn--edit`)
+      .addEventListener(`click`, this._onEditButtonClick);
+
+    this._element.querySelector(`.card__delete`)
+      .addEventListener(`click`, this._onDeleteButtonClick);
   }
 
   unbind() {
     this._element.querySelector(`.card__save`)
       .removeEventListener(`click`, this._onSubmitButtonClick);
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 }
 

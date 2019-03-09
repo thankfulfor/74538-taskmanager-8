@@ -74,6 +74,12 @@ const renderTask = function (data) {
   cardsParentElement.appendChild(taskComponent.render());
   const editTaskComponent = new TaskEdit(data);
 
+  const replaceComponents = function () {
+    taskComponent.render();
+    cardsParentElement.replaceChild(taskComponent.element, editTaskComponent.element);
+    editTaskComponent.unrender();
+  };
+
   taskComponent.onEdit = () => {
     editTaskComponent.render();
     cardsParentElement.replaceChild(editTaskComponent.element, taskComponent.element);
@@ -81,8 +87,15 @@ const renderTask = function (data) {
   };
 
   editTaskComponent.onSubmit = () => {
-    taskComponent.render();
-    cardsParentElement.replaceChild(taskComponent.element, editTaskComponent.element);
+    replaceComponents();
+  };
+
+  editTaskComponent.onEdit = () => {
+    replaceComponents();
+  };
+
+  editTaskComponent.onDelete = () => {
+    cardsParentElement.removeChild(editTaskComponent.element);
     editTaskComponent.unrender();
   };
 };
