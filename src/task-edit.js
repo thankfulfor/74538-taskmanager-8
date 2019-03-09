@@ -1,10 +1,11 @@
-import {createElement} from './utils';
 import getColor from './render-color';
 import getDays from './render-days';
 import getHashtags from './render-hashtags';
+import {Component} from './component';
 
-export class TaskEdit {
+export class TaskEdit extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
@@ -16,7 +17,6 @@ export class TaskEdit {
     this._repeatingDays = data.repeatingDays;
 
     this._onSubmit = null;
-    this._element = null;
     this._onSubmitButtonClick = this._onSubmitButtonClick.bind(this);
   }
 
@@ -33,10 +33,6 @@ export class TaskEdit {
       minute: `numeric`,
       hour12: true
     });
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onSubmit(fn) {
@@ -185,17 +181,6 @@ export class TaskEdit {
   unbind() {
     this._element.querySelector(`.card__save`)
       .removeEventListener(`click`, this._onSubmitButtonClick);
-  }
-
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
   }
 }
 

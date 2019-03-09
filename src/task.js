@@ -1,14 +1,14 @@
-import {createElement} from './utils';
+import {Component} from './component';
 
-export class Task {
+export class Task extends Component {
   constructor(data) {
+    super();
     this._title = data.title;
     this._dueDate = data.dueDate;
     this._tags = data.tags;
     this._picture = data.picture;
     this._repeatingDays = data.repeatingDays;
 
-    this._element = null;
     this._onEdit = null;
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
 
@@ -37,10 +37,6 @@ export class Task {
   _isRepeated() {
     return Object.values(this._repeatingDays)
       .some((dayOfWeek) => dayOfWeek === true);
-  }
-
-  get element() {
-    return this._element;
   }
 
   set onEdit(fn) {
@@ -166,15 +162,5 @@ export class Task {
       .removeEventListener(`click`, this._onEditButtonClick);
   }
 
-  render() {
-    this._element = createElement(this.template);
-    this.bind();
-    return this._element;
-  }
-
-  unrender() {
-    this.unbind();
-    this._element = null;
-  }
 }
 
