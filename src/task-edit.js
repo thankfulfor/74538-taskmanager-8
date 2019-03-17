@@ -31,17 +31,19 @@ export class TaskEdit extends Component {
     this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
+    // this._getDueDate = this._getDueDate.bind(this);
+    // this._getDueTime = this._getDueTime.bind(this);
   }
 
-  _getDueDate() {
-    return this._dueDate.toLocaleDateString(`en-GB`, {
+  _getDueDate(dueDate) {
+    return new Date(dueDate).toLocaleDateString(`en-GB`, {
       day: `numeric`,
       month: `long`,
     });
   }
 
-  _getDueTime() {
-    return this._dueDate.toLocaleString(`en-US`, {
+  _getDueTime(dueDate) {
+    return new Date(dueDate).toLocaleString(`en-US`, {
       hour: `numeric`,
       minute: `numeric`,
       hour12: false
@@ -80,7 +82,8 @@ export class TaskEdit extends Component {
       text: (value) => (target.title = value),
       color: (value) => (target.color = value),
       repeat: (value) => (target.repeatingDays[value] = true),
-      date: (value) => target.dueDate[value],
+      date: (value) => (target.dueDate = value),
+      time: (value) => (target.dueDate += ` ` + value),
     };
   }
 
@@ -102,7 +105,6 @@ export class TaskEdit extends Component {
     };
 
     const taskEditMapper = TaskEdit.createMapper(entry);
-
     for (const pair of formData.entries()) {
       const [property, value] = pair;
 
@@ -110,7 +112,6 @@ export class TaskEdit extends Component {
         taskEditMapper[property](value);
       }
     }
-
     return entry;
   }
 
@@ -121,6 +122,7 @@ export class TaskEdit extends Component {
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
     const formData = new FormData(this._element.querySelector(`.card__form`));
+
     const newData = this._processForm(formData);
     if (typeof this._onSubmit === `function`) {
       this._onSubmit(newData);
@@ -155,7 +157,7 @@ export class TaskEdit extends Component {
 
   get template() {
     return (
-      `<article class="card card--edit ${colorCssClassnames[this._color]} ${this._isRepeated() && `card--repeat`}">
+      `<article class="card card--edit ${colorCssClassnames[this._color]} ${this._isRepeated() ? `card--repeat` : ``}">
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
@@ -196,33 +198,32 @@ export class TaskEdit extends Component {
                   date: <span class="card__date-status">${this._state.isDate ? `yes` : `no`}</span>
                   </button>
   
-                  <fieldset class="card__date-deadline" ${!this._state.isDate && `disabled`}>
-                      <label class="card__input-deadline-wrap">
-                        <input
-                          class="card__date"
-                          type="text"
-                          placeholder="${this._getDueDate()}"
-                      name="date"
-                      value="${this._getDueDate()}"
-                    />
-                  </label>
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__time"
-                      type="text"
-                      placeholder="${this._getDueTime()}"
-                      name="time"
-                      value="${this._getDueTime()}"
-                    />
-                  </label>
-                </fieldset>
+                  <fieldset class="card__date-deadline" ${!this._state.isDate ? `disabled` : ``}>
+                    <label class="card__input-deadline-wrap">
+                      <input
+                        class="card__date"
+                        type="text"
+                        name="date"
+                        value="${this._getDueDate(this._dueDate)}"
+                      />
+                    </label>
+                    <label class="card__input-deadline-wrap">
+                      <input
+                        class="card__time"
+                        type="text"
+                        placeholder="${this._getDueTime(this._dueDate)}"
+                        name="time"
+                        value="${this._getDueTime(this._dueDate)}"
+                      />
+                    </label>
+                  </fieldset>
 
-                <button class="card__repeat-toggle" type="button">
+                  <button class="card__repeat-toggle" type="button">
                   repeat:<span class="card__repeat-status">${this._state.isRepeated ? `yes` : `no`}</span>
                   </button>
 
-                  <fieldset class="card__repeat-days" ${!this._state.isRepeated && `disabled`}>
-                      <div class="card__repeat-days-inner">
+                  <fieldset class="card__repeat-days" ${!this._state.isRepeated ? `disabled` : ``}>
+                    <div class="card__repeat-days-inner">
 ${this._getDays(this._repeatingDays)}
                   </div>
                 </fieldset>
@@ -290,7 +291,6 @@ ${this._getDays(this._repeatingDays)}
 
     this._element.querySelector(`.card__repeat-toggle`)
       .addEventListener(`click`, this._onChangeRepeated);
-
 
     if (this._state.isDate) {
       flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});

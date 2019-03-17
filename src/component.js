@@ -18,7 +18,6 @@ export class Component {
     throw new Error(`Нужно определить шаблон.`);
   }
 
-
   bind() {}
 
   unbind() {}

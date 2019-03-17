@@ -1,5 +1,6 @@
 import {Component} from './component';
 import {colorCssClassnames} from './mocks';
+import moment from 'moment';
 
 export class Task extends Component {
   constructor(data) {
@@ -9,8 +10,10 @@ export class Task extends Component {
     this._tags = data.tags;
     this._picture = data.picture;
     this._repeatingDays = data.repeatingDays;
+    this._color = data.color;
 
     this._onEdit = null;
+
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
@@ -19,6 +22,7 @@ export class Task extends Component {
     this._tags = data.tags;
     this._color = data.color;
     this._repeatingDays = data.repeatingDays;
+    this._dueDate = data.dueDate;
   }
 
   _onEditButtonClick() {
@@ -36,15 +40,15 @@ export class Task extends Component {
     this._onEdit = fn;
   }
 
-  _getDueDate() {
-    return this._dueDate.toLocaleDateString(`en-GB`, {
+  _getDueDate(dueDate) {
+    return new Date(dueDate).toLocaleDateString(`en-GB`, {
       day: `numeric`,
       month: `long`,
     });
   }
 
-  _getDueTime() {
-    return this._dueDate.toLocaleString(`en-US`, {
+  _getDueTime(dueDate) {
+    return new Date(dueDate).toLocaleString(`en-US`, {
       hour: `numeric`,
       minute: `numeric`,
       hour12: false
@@ -66,7 +70,7 @@ export class Task extends Component {
 
   get template() {
     return (
-      `<article class="card ${colorCssClassnames[this._color]} ${this._isRepeated() && `card--repeat`}">
+      `<article class="card ${colorCssClassnames[this._color]} ${this._isRepeated() ? `card--repeat` : ``}">
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">
@@ -103,30 +107,12 @@ export class Task extends Component {
           <div class="card__settings">
             <div class="card__details">
               <div class="card__dates">
-                <button class="card__date-deadline-toggle" type="button">
-                  date: <span class="card__date-status">yes</span>
-                </button>
-
-                <fieldset class="card__date-deadline">
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__date"
-                      type="text"
-                      placeholder="${this._getDueDate()}"
-                      name="date"
-                      value="${this._getDueDate()}"
-                    />
-                  </label>
-                  <label class="card__input-deadline-wrap">
-                    <input
-                      class="card__time"
-                      type="text"
-                      placeholder="${this._getDueTime()}"
-                      name="time"
-                      value="${this._getDueTime()}"
-                    />
-                  </label>
-                </fieldset>
+              <div class="card__date">
+                ${moment(this._dueDate).format(`D MMMM`)}
+              </div>
+              <div class="card__time">
+                ${moment(this._dueDate).format(`h:mm`)}
+              </div>
               </div>
 
               <div class="card__hashtag">
