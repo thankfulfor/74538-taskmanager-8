@@ -1,4 +1,5 @@
 import {Component} from './component';
+import {colorCssClassnames} from './mocks';
 
 export class Task extends Component {
   constructor(data) {
@@ -11,6 +12,13 @@ export class Task extends Component {
 
     this._onEdit = null;
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
+  }
+
+  update(data) {
+    this._title = data.title;
+    this._tags = data.tags;
+    this._color = data.color;
+    this._repeatingDays = data.repeatingDays;
   }
 
   _onEditButtonClick() {
@@ -39,7 +47,7 @@ export class Task extends Component {
     return this._dueDate.toLocaleString(`en-US`, {
       hour: `numeric`,
       minute: `numeric`,
-      hour12: true
+      hour12: false
     });
   }
 
@@ -58,7 +66,7 @@ export class Task extends Component {
 
   get template() {
     return (
-      `<article class="card card--yellow ${this._isRepeated() ? `card--repeat` : ``}">
+      `<article class="card ${colorCssClassnames[this._color]} ${this._isRepeated() && `card--repeat`}">
         <form class="card__form" method="get">
           <div class="card__inner">
             <div class="card__control">

@@ -7,6 +7,7 @@ export class Component {
     }
 
     this._element = null;
+    this._state = {};
   }
 
   get element() {
@@ -16,6 +17,7 @@ export class Component {
   get template() {
     throw new Error(`Нужно определить шаблон.`);
   }
+
 
   bind() {}
 
@@ -31,5 +33,7 @@ export class Component {
     this.unbind();
     this._element = null;
   }
+
+  update() {}
 }
 

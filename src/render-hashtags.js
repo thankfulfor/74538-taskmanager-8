@@ -6,7 +6,7 @@ export default function (hashtags) {
           <input
             type="hidden"
             name="hashtag"
-            value="repeat"
+            value="${tag}"
             class="card__hashtag-hidden-input"
           />
           <button type="button" class="card__hashtag-name">

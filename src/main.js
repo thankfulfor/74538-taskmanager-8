@@ -86,7 +86,14 @@ const renderTask = function (data) {
     taskComponent.unrender();
   };
 
-  editTaskComponent.onSubmit = () => {
+  editTaskComponent.onSubmit = (newObject) => {
+    data.title = newObject.title;
+    data.tags = newObject.tags;
+    data.color = newObject.color;
+    data.repeatingDays = newObject.repeatingDays;
+    data.dueDate = newObject.dueDate;
+    taskComponent.update(data);
+
     replaceComponents();
   };
 

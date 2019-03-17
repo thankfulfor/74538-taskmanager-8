@@ -30,18 +30,27 @@ const hashtags = new Set([
   `kettle`,
 ]);
 
+const getTags = () => {
+  const randomTagsSet = new Set();
+  for (let i = 0; i <= getRandomNumber(HASHTAGS_MAX_QUANTITY); i++) {
+    randomTagsSet.add(Array.from(hashtags)[getRandomNumber(hashtags.size)]);
+  }
+  return randomTagsSet;
+};
+
+export const colorCssClassnames = {
+  blue: `card--blue`,
+  black: `card--black`,
+  yellow: `card--yellow`,
+  green: `card--green`,
+  pink: `card--pink`,
+};
 
 export const getTaskData = () => ({
   title: titles[getRandomNumber(titles.length)],
   dueDate: new Date(Date.now() - (DAYS_IN_WEEK * MILLISECONDS_IN_TWENTY_FOUR_HOURS) +
     getRandomNumber(DAYS_IN_WEEK * 2) * MILLISECONDS_IN_TWENTY_FOUR_HOURS),
-  get tags() {
-    const randomTagsSet = new Set();
-    for (let i = 0; i <= getRandomNumber(HASHTAGS_MAX_QUANTITY); i++) {
-      randomTagsSet.add(Array.from(hashtags)[getRandomNumber(hashtags.size)]);
-    }
-    return randomTagsSet;
-  },
+  tags: getTags(),
   picture: `http://picsum.photos/100/100?r=${Math.random()}`,
   color: colors[getRandomNumber(colors.length)],
   repeatingDays: {
