@@ -40,21 +40,6 @@ export class Task extends Component {
     this._onEdit = fn;
   }
 
-  _getDueDate(dueDate) {
-    return new Date(dueDate).toLocaleDateString(`en-GB`, {
-      day: `numeric`,
-      month: `long`,
-    });
-  }
-
-  _getDueTime(dueDate) {
-    return new Date(dueDate).toLocaleString(`en-US`, {
-      hour: `numeric`,
-      minute: `numeric`,
-      hour12: false
-    });
-  }
-
   _getHashTags() {
     const hashtags = Array.from(this._tags);
     const getHashtag = (tag) => {

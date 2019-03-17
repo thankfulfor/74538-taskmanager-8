@@ -31,8 +31,6 @@ export class TaskEdit extends Component {
     this._onDeleteButtonClick = this._onDeleteButtonClick.bind(this);
     this._onChangeDate = this._onChangeDate.bind(this);
     this._onChangeRepeated = this._onChangeRepeated.bind(this);
-    // this._getDueDate = this._getDueDate.bind(this);
-    // this._getDueTime = this._getDueTime.bind(this);
   }
 
   _getDueDate(dueDate) {
@@ -69,6 +67,7 @@ export class TaskEdit extends Component {
   }
 
   update(data) {
+    this._state.isDate = !this._state.isDate;
     this._title = data.title;
     this._tags = data.tags;
     this._color = data.color;
@@ -122,7 +121,6 @@ export class TaskEdit extends Component {
   _onSubmitButtonClick(evt) {
     evt.preventDefault();
     const formData = new FormData(this._element.querySelector(`.card__form`));
-
     const newData = this._processForm(formData);
     if (typeof this._onSubmit === `function`) {
       this._onSubmit(newData);
