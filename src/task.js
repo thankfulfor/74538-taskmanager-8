@@ -17,6 +17,7 @@ export class Task extends Component {
     this._onEditButtonClick = this._onEditButtonClick.bind(this);
   }
 
+
   update(data) {
     this._title = data.title;
     this._tags = data.tags;
@@ -93,10 +94,10 @@ export class Task extends Component {
             <div class="card__details">
               <div class="card__dates">
               <div class="card__date">
-                ${moment(this._dueDate).format(`D MMMM`)}
+                ${moment(this._dueDate, `D MMMM`).format(`D MMMM`)}
               </div>
               <div class="card__time">
-                ${moment(this._dueDate).format(`h:mm`)}
+                ${moment(this._dueDate, `D MMMM H:mm`).format(`H:mm`)}
               </div>
               </div>
 

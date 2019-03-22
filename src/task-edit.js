@@ -292,7 +292,8 @@ ${this._getDays(this._repeatingDays)}
 
     if (this._state.isDate) {
       flatpickr(`.card__date`, {altInput: true, altFormat: `j F`, dateFormat: `j F`});
-      flatpickr(`.card__time`, {enableTime: true, noCalendar: true, altInput: true, altFormat: `h:i K`, dateFormat: `h:i K`});
+      // eslint-disable-next-line camelcase
+      flatpickr(`.card__time`, {enableTime: true, time_24hr: true, noCalendar: true, altInput: true, altFormat: `H:i`, dateFormat: `H:i`});
     }
   }
 
